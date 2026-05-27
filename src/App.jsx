@@ -10,6 +10,7 @@ import {
   parseLogLine,
 } from "./dashboardState";
 import { mockLogsByTarget, mockOverview, mockSummaryByTarget } from "./mockData";
+import brandLogo from "./assets/stackbeacon-logo.jpg";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", href: "#dashboard", mark: "DB", current: true },
@@ -76,9 +77,12 @@ function App() {
 
       <aside className={`sidebar ${navOpen ? "open" : ""}`}>
         <div className="sidebar-brand">
-          <p className="eyebrow">StackBeacon Demo</p>
-          <h1>Operations</h1>
-          <p>Mock telemetry and AI triage for portfolio-safe review.</p>
+          <img className="brand-logo" src={brandLogo} alt="StackBeacon logo" />
+          <div className="sidebar-brand-copy">
+            <p className="eyebrow">StackBeacon Demo</p>
+            <h1>Operations</h1>
+            <p>Mock telemetry and AI triage for portfolio-safe review.</p>
+          </div>
         </div>
 
         <nav className="sidebar-nav" aria-label="Primary">
