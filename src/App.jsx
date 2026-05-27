@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   buildDiagnosticDetails,
+  formatAbsoluteDate,
   buildMetricCards,
   buildRefreshState,
   buildStatusSummary,
@@ -403,7 +404,7 @@ function StatusList({ items, onSelect, selected }) {
 
 function DomainCard({ domain }) {
   const tone = getStatusTone(domain);
-  const expires = domain.certificateAt ? new Date(domain.certificateAt).toLocaleDateString() : "No cert data";
+  const expires = domain.certificateAt ? formatAbsoluteDate(domain.certificateAt) : "No cert data";
   return (
     <article className={`domain-card tone-${tone}`}>
       <div>

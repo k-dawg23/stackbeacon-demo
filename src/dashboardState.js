@@ -188,7 +188,7 @@ export function parseLogLine(line, index) {
   const text = String(line ?? "");
   const severity = inferLogSeverity(text);
   const timestampMatch = text.match(/^(\d{4}-\d{2}-\d{2}[T ][0-9:.+-Z]+|\[[0-9:.:-]+\]|[A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})/);
-  const timeLabel = timestampMatch ? timestampMatch[1].replace(/^\[|\]$/g, "") : `recent-${String(index + 1).padStart(3, "0")}`;
+  const rawTimeLabel = timestampMatch ? timestampMatch[1].replace(/^\[|\]$/g, "") : "";
   const message = text
     .replace(/^(\d{4}-\d{2}-\d{2}[T ][0-9:.+-Z]+|\[[0-9:.:-]+\]|[A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s*/, "")
     .replace(/^(INFO|WARN|WARNING|ERROR|FATAL|PANIC)\s+/i, "")
@@ -197,12 +197,24 @@ export function parseLogLine(line, index) {
   return {
     key: `${index}-${text}`,
     lineNumber: String(index + 1).padStart(3, "0"),
-    timeLabel,
+    timeLabel: rawTimeLabel ? formatLogTimestamp(rawTimeLabel) : `recent-${String(index + 1).padStart(3, "0")}`,
     severity,
     label: severity === "unknown" ? "info" : severity,
     message: message || text,
     raw: text,
   };
+}
+
+export function formatAbsoluteDate(value) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "No cert data";
+  }
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(date);
 }
 
 export function formatRelativeTime(value) {
@@ -236,6 +248,23 @@ function inferLogSeverity(line) {
     return "info";
   }
   return "unknown";
+}
+
+function formatLogTimestamp(value) {
+  const normalized = String(value).replace(" ", "T");
+  const date = new Date(normalized);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).format(date);
 }
 
 function getHealthTone(health) {

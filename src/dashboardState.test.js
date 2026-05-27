@@ -5,6 +5,7 @@ import {
   buildMetricCards,
   buildRefreshState,
   buildStatusSummary,
+  formatAbsoluteDate,
   formatRelativeTime,
   getStatusTone,
   parseLogLine,
@@ -58,10 +59,14 @@ test("buildMetricCards produces four metric cards with severity tones", () => {
 
 test("parseLogLine extracts timestamps and severity", () => {
   const parsed = parseLogLine("2026-05-25T12:00:00Z ERROR disk full", 0);
-  assert.equal(parsed.timeLabel, "2026-05-25T12:00:00Z");
+  assert.match(parsed.timeLabel, /^\d{2}\/\d{2}\/\d{4}, \d{2}:\d{2}:\d{2}$/);
   assert.equal(parsed.severity, "error");
   assert.equal(parsed.message, "disk full");
   assert.equal(parsed.lineNumber, "001");
+});
+
+test("formatAbsoluteDate uses UK-style calendar ordering", () => {
+  assert.equal(formatAbsoluteDate("2026-05-27T00:00:00Z"), "27/05/2026");
 });
 
 test("formatRelativeTime returns stable labels", () => {
