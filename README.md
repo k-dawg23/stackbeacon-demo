@@ -67,10 +67,9 @@ Single-column mobile view showing the same triage flow and status information in
 
 ## Live Demo
 
-Live demo placeholder:
-
-- URL: `TBD`
+- URL: [https://stackbeacon.net](https://stackbeacon.net)
 - Access mode: public read-only mock demo
+- Purpose: portfolio-safe product walkthrough using mock telemetry and simulated AI diagnostics
 
 ## Features
 
@@ -203,6 +202,8 @@ npm test
 
 ### Phase 2: Read-Only Production MVP
 
+Implemented. Remaining work is production validation, hardening, and deployment verification.
+
 - Go backend API
 - local Go agent
 - SQLite persistence
@@ -210,6 +211,9 @@ npm test
 - systemd status
 - log retrieval
 - domain/SSL checks
+- production VPS validation
+- deployment verification
+- failure-case hardening and test expansion
 
 ### Phase 3: AI Diagnostics
 
